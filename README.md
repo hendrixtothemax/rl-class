@@ -1,7 +1,3 @@
-# Project Code
-
-All code in this repository was written by **Alex Hendrix**.
-
 ## Usage Restrictions
 - This code is intended **only for my personal academic use**.  
 - **No one other than myself** is permitted to use, modify, or redistribute this code.  
