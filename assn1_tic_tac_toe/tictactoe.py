@@ -364,13 +364,21 @@ if __name__ == "__main__":
 
     # ---------- Compute Monte-Carlo Q and Q-learning Q ----------
     # WARNING: increasing these will improve estimates but increase runtime.
-    mc_episodes = 200000      # adjust as needed
-    q_episodes = 200000       # adjust as needed
+    mc_episodes = 50000      # adjust as needed
+    q_episodes = 50000       # adjust as needed
 
     t0 = time.time()
     print(f"Computing Monte-Carlo Q with {mc_episodes} episodes (random policy)...")
     mcQ = mc_first_visit_Q(num_episodes=mc_episodes)
     print(f"Done MC in {time.time()-t0:.1f}s\n")
+
+    # Monte-Carlo Win Rate Following Greedy:
+    mcpolicy = q_policy(mcQ)
+    w_mc, d_mc, l_mc = play_many(mcpolicy, 10000)
+    print("Evaluating monte-carlo (greedy) vs random:")
+    print(
+        f"q-learning (as X) vs random O: win={w_mc:.3f}, draw={d_mc:.3f}, loss={l_mc:.3f}\n"
+    )
 
     t0 = time.time()
     print(f"Running Q-learning for {q_episodes} episodes...")
@@ -398,3 +406,7 @@ if __name__ == "__main__":
     compare_Qs_show(test_state_3, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
     compare_Qs_show(test_state_4, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
     compare_Qs_show(test_state_5, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
+
+    # Print out training stats:
+    print(f'Monte-Carlo Stats:\nNumber of Episodes: {mc_episodes}')
+    print(f'Q-Learning Stats:\nNumber of Episodes: {mc_episodes}')
