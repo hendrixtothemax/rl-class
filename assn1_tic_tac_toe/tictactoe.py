@@ -401,6 +401,7 @@ if __name__ == "__main__":
     test_state_3 = ["X", "~", "~", "~", "~", "~", "O", "~", "~"]
     test_state_4 = ["X", "~", "~", "X", "~", "~", "O", "O", "~"]
     test_state_5 = ["X", "~", "X", "X", "~", "O", "O", "O", "~"]
+    test_state_empty = ["~", "~", "~", "~", "~", "~", "~", "~", "~"]
 
     # Print side-by-side MC vs Q-learning for each test state
     compare_Qs_show(test_state, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
@@ -408,13 +409,14 @@ if __name__ == "__main__":
     compare_Qs_show(test_state_3, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
     compare_Qs_show(test_state_4, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
     compare_Qs_show(test_state_5, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
+    compare_Qs_show(test_state_empty, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
 
     # Print out training stats:
     print("\n#------------------------------------------------------#\n")
-    print(f'Monte-Carlo Stats:\nNumber of Episodes: {mc_episodes}')
+    print(f'Monte-Carlo Info:\nNumber of Episodes: {mc_episodes}')
     print(f"monte-carlo greedy (as X) vs random O: win={w_mc:.3f}, draw={d_mc:.3f}, loss={l_mc:.3f}\n")
     print("#------------------------------------------------------#\n")
-    print(f'Q-Learning Stats:\nNumber of Episodes: {mc_episodes}')
+    print(f'Q-Learning Info:\nNumber of Episodes: {mc_episodes}')
     print(f"q-learning (as X) vs random O: win={w_q:.3f}, draw={d_q:.3f}, loss={l_q:.3f}\n")
     print(f"starting alpha: {alph}\nstarting epsilon: {eps}\n")
     print("#------------------------------------------------------#")
