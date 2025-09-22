@@ -300,7 +300,7 @@ def q_learning(
 
         # optional: periodic quick evaluation to watch progress
         if eval_every and (ep % eval_every == 0):
-            pol = q_policy(Q)
+            pol = greedy_policy(Q)
             w, d, l = play_many(pol, n=eval_n)
             print(
                 f"Episode {ep:6d} eps={eps:.4f} eval win/draw/loss = "
@@ -310,7 +310,7 @@ def q_learning(
     return Q
 
 
-def q_policy(Q):
+def greedy_policy(Q):
     """Return greedy policy from Q with random tie-breaking."""
     def policy(state):
         s_str = get_state_str(state)
@@ -373,20 +373,22 @@ if __name__ == "__main__":
     print(f"Done MC in {time.time()-t0:.1f}s\n")
 
     # Monte-Carlo Win Rate Following Greedy:
-    mcpolicy = q_policy(mcQ)
+    mcpolicy = greedy_policy(mcQ)
     w_mc, d_mc, l_mc = play_many(mcpolicy, 10000)
     print("Evaluating monte-carlo (greedy) vs random:")
     print(
-        f"q-learning (as X) vs random O: win={w_mc:.3f}, draw={d_mc:.3f}, loss={l_mc:.3f}\n"
+        f"monte-carlo greedy (as X) vs random O: win={w_mc:.3f}, draw={d_mc:.3f}, loss={l_mc:.3f}\n"
     )
 
     t0 = time.time()
     print(f"Running Q-learning for {q_episodes} episodes...")
-    qQ = q_learning(num_episodes=q_episodes, alpha=0.5, eps_start=0.6)
+    alph = 0.5
+    eps = 0.6
+    qQ = q_learning(num_episodes=q_episodes, alpha=alph, eps_start=eps)
     print(f"Done Q-learning in {time.time()-t0:.1f}s\n")
 
     # Evaluate learned greedy Q policy
-    policy = q_policy(qQ)
+    policy = greedy_policy(qQ)
     w_q, d_q, l_q = play_many(policy, 10000)
     print("Evaluating q-learning (greedy) vs random:")
     print(
@@ -408,5 +410,11 @@ if __name__ == "__main__":
     compare_Qs_show(test_state_5, mcQ, qQ, label_mc="MC (random policy)", label_q="Q-learning (learned)")
 
     # Print out training stats:
+    print("\n#------------------------------------------------------#\n")
     print(f'Monte-Carlo Stats:\nNumber of Episodes: {mc_episodes}')
+    print(f"monte-carlo greedy (as X) vs random O: win={w_mc:.3f}, draw={d_mc:.3f}, loss={l_mc:.3f}\n")
+    print("#------------------------------------------------------#\n")
     print(f'Q-Learning Stats:\nNumber of Episodes: {mc_episodes}')
+    print(f"q-learning (as X) vs random O: win={w_q:.3f}, draw={d_q:.3f}, loss={l_q:.3f}\n")
+    print(f"starting alpha: {alph}\nstarting epsilon: {eps}\n")
+    print("#------------------------------------------------------#")
